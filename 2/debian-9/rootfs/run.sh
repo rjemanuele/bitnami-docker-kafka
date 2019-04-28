@@ -7,6 +7,12 @@ USER=kafka
 KAFKA_HOME="/opt/bitnami/kafka"
 START_COMMAND="${KAFKA_HOME}/bin/kafka-server-start.sh ${KAFKA_HOME}/config/server.properties"
 
+# just append the additional server values
+if [[ -f "${KAFKA_HOME}/config/additional.server.properties" ]]; then
+    echo -e "\n\n" >> ${KAFKA_HOME}/config/server.properties
+    cat ${KAFKA_HOME}/config/additional.server.properties >> ${KAFKA_HOME}/config/server.properties
+fi
+
 if [[ -z "$KAFKA_BROKER_ID" ]]; then
     if [[ -n "$BROKER_ID_COMMAND" ]]; then
         KAFKA_BROKER_ID="$(eval "$BROKER_ID_COMMAND")"
